@@ -31,7 +31,7 @@ from anomalib.models import AnomalyModule
 from anomalib.utils.normalization import NormalizationMethod
 from anomalib.utils.path import create_versioned_dir
 from anomalib.utils.types import NORMALIZATION, THRESHOLD
-from anomalib.utils.visualization import ImageVisualizer
+from anomalib.utils.visualization import ImageVisualizer, MetricsVisualizer
 
 logger = logging.getLogger(__name__)
 
@@ -386,6 +386,8 @@ class Engine:
         """Set up callbacks for the trainer."""
         _callbacks: list[Callback] = []
 
+        # TODO: CHANGE BACK !!!!!!!!!
+
         # Add ModelCheckpoint if it is not in the callbacks list.
         has_checkpoint_callback = any(isinstance(c, ModelCheckpoint) for c in self._cache.args["callbacks"])
         if has_checkpoint_callback is False:
@@ -414,6 +416,13 @@ class Engine:
                 visualizers=ImageVisualizer(task=self.task),
                 save=True,
                 root=self._cache.args["default_root_dir"] / "images",
+            ),
+        )
+
+        _callbacks.append(_VisualizationCallback(
+                visualizers=MetricsVisualizer(),
+                save=True,
+                root=self._cache.args["default_root_dir"] / "metrics",
             ),
         )
 

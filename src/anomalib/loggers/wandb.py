@@ -138,7 +138,9 @@ class AnomalibWandbLogger(ImageLoggerBase, WandbLogger):
             There is a limit on the number of images that can be logged together to the `wandb` server.
         """
         super().save()
-        if len(self.image_list) > 1:
-            wandb.log({"Predictions": self.image_list})
-            self.image_list = []
-            self.image_list = []
+
+        # Uncomment this to upload images to wandb
+        # if len(self.image_list) > 1:
+        #     wandb.log({"Predictions": self.image_list})
+        #     self.image_list = []
+        #     self.image_list = []
